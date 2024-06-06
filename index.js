@@ -14,7 +14,7 @@ const client = new Discord.Client({
 });
 
 // Start the Bot
-client.login(process.env.token);
+client.login(process.env.TOKEN);
 
 // Create a simple HTTP server to avoid port scan timeout error
 const server = http.createServer((req, res) => {

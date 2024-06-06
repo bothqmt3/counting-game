@@ -42,17 +42,6 @@ client.on("ready", () => {
 client.on("messageCreate", async (message) => {
     if (message.channel.id !== '1248294576184361007') return;
 
-    if (message.attachments.size > 0) {
-        message.react('❌');
-        message.channel.send("Không hình ảnh!");
-        const game = games.get(message.channel.id);
-        if (game) {
-            game.resetGame();
-            game.startGame();
-        }
-        return;
-    }
-
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new WordChainGame(message.channel));
     }

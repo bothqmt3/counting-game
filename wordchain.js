@@ -50,6 +50,7 @@ class WordChainGame {
             message.react('❌');
             this.channel.send("Bạn không thể nối 2 lần liên tiếp!");
             this.resetGame();
+            this.startGame();
             return;
         }
 
@@ -57,6 +58,7 @@ class WordChainGame {
             message.react('❌');
             this.channel.send("Từ không hợp lệ hoặc đã được sử dụng, vui lòng thử lại!");
             this.resetGame();
+            this.startGame();
             return;
         }
 
@@ -74,6 +76,7 @@ class WordChainGame {
             message.react('❌');
             this.channel.send("Từ phải bắt đầu bằng ký tự của từ cuối cùng!");
             this.resetGame();
+            this.startGame();
         }
     }
 

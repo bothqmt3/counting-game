@@ -33,10 +33,14 @@ const games = new Map();
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
+    const readyChannel = client.channels.cache.get('1248298010429882508');
+    if (readyChannel) {
+        readyChannel.send(`<@1015763488938938388> Bot đã sẵn sàng hoạt động!`);
+    }
 });
 
 client.on("messageCreate", async (message) => {
-    if (message.channel.id !== '1248294576184361007') return;
+    if (message.channel.id !== '1245357473267716137') return;
 
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new WordChainGame(message.channel));

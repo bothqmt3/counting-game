@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const randomWords = ['con cá', 'cá chim', 'chim sẻ', 'sẻ non', 'cắt cu'];
 
 class WordChainGame {
     constructor(channel) {
@@ -29,7 +29,6 @@ class WordChainGame {
     }
 
     setRandomWord() {
-        const randomWords = ['con cá', 'cá chim', 'chim sẻ', 'sẻ non'];
         this.currentWord = randomWords[Math.floor(Math.random() * randomWords.length)];
         this.words.push(this.currentWord);
         this.channel.send(`Từ bắt đầu là: **${this.currentWord}**`);
@@ -45,6 +44,14 @@ class WordChainGame {
 
         const player = message.author;
         const word = message.content.trim();
+
+        if (message.attachments.size > 0) {
+            message.react('❌');
+            this.channel.send("Không chấp nhận hình ảnh!");
+            this.resetGame();
+            this.startGame();
+            return;
+        }
 
         if (player === this.lastPlayer) {
             message.react('❌');

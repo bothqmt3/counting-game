@@ -33,10 +33,6 @@ const games = new Map();
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
-    const readyChannel = client.channels.cache.get('1248298010429882508');
-    if (readyChannel) {
-        readyChannel.send(`<@1015763488938938388> Bot đã sẵn sàng hoạt động!`);
-    }
 });
 
 client.on("messageCreate", async (message) => {
@@ -72,6 +68,6 @@ client.on("messageCreate", async (message) => {
         if (!game.players.includes(message.author)) {
             game.addPlayer(message.author);
         }
-        game.processWord(message.content.trim(), message.author);
+        game.processWord(message, message.author);
     }
 });

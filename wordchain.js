@@ -1,4 +1,4 @@
-const randomWords = ['con cá', 'cá chim', 'chim sẻ', 'sẻ non', 'cắt cu'];
+const Discord = require("discord.js");
 
 class WordChainGame {
     constructor(channel) {
@@ -29,6 +29,7 @@ class WordChainGame {
     }
 
     setRandomWord() {
+        const randomWords = ['con cá', 'cá chim', 'chim sẻ', 'sẻ non'];
         this.currentWord = randomWords[Math.floor(Math.random() * randomWords.length)];
         this.words.push(this.currentWord);
         this.channel.send(`Từ bắt đầu là: **${this.currentWord}**`);
@@ -45,19 +46,17 @@ class WordChainGame {
         const player = message.author;
         const word = message.content.trim();
 
-        if (message.attachments.size > 0) {
-            message.react('❌');
-            this.channel.send("Không chấp nhận hình ảnh!");
-            this.resetGame();
-            this.startGame();
-            return;
-        }
-
         if (player === this.lastPlayer) {
             message.react('❌');
             this.channel.send("Bạn không thể nối 2 lần liên tiếp!");
             this.resetGame();
-            this.startGame();
+            return;
+        }
+
+        if (message.content.includes('http') || message.content.includes('www')) {
+            message.react('❌');
+            this.channel.send("Cấm gửi link!");
+            this.resetGame();
             return;
         }
 
@@ -65,7 +64,6 @@ class WordChainGame {
             message.react('❌');
             this.channel.send("Từ không hợp lệ hoặc đã được sử dụng, vui lòng thử lại!");
             this.resetGame();
-            this.startGame();
             return;
         }
 
@@ -83,7 +81,6 @@ class WordChainGame {
             message.react('❌');
             this.channel.send("Từ phải bắt đầu bằng ký tự của từ cuối cùng!");
             this.resetGame();
-            this.startGame();
         }
     }
 
@@ -105,6 +102,7 @@ class WordChainGame {
         this.turn = 0;
         this.inProgress = false;
         this.lastPlayer = null;
+        this.setRandomWord();
     }
 }
 

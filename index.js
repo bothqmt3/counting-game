@@ -14,7 +14,7 @@ const client = new Discord.Client({
 });
 
 // Start the Bot
-client.login(process.env.TOKEN);
+client.login(process.env.token);
 
 // Create a simple HTTP server to avoid port scan timeout error
 const server = http.createServer((req, res) => {
@@ -40,7 +40,7 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message) => {
-    if (message.channel.id !== '1248294576184361007') return;
+    if (message.channel.id !== '1245357473267716137') return;
 
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new WordChainGame(message.channel));

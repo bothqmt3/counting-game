@@ -69,6 +69,7 @@ class WordChainGame {
             this.lastPlayer = player;
             this.turn = (this.turn + 1) % this.players.length;
 
+            // Bỏ qua lượt nếu người chơi hiện tại là người chơi cuối cùng
             if (this.players[this.turn] === this.lastPlayer) {
                 this.turn = (this.turn + 1) % this.players.length;
             }

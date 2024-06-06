@@ -49,6 +49,12 @@ class WordChainGame {
             return;
         }
 
+        if (this.containsImage(word)) {
+            this.channel.send("Không được gửi hình ảnh!");
+            this.resetGame();
+            return;
+        }
+
         if (!this.isValidWord(word)) {
             this.channel.send("Từ không hợp lệ hoặc đã được sử dụng, vui lòng thử lại!");
             this.resetGame();
@@ -63,12 +69,11 @@ class WordChainGame {
             this.lastPlayer = player;
             this.turn = (this.turn + 1) % this.players.length;
 
-            // Bỏ qua lượt nếu người chơi hiện tại là người chơi cuối cùng
             if (this.players[this.turn] === this.lastPlayer) {
                 this.turn = (this.turn + 1) % this.players.length;
             }
 
-            this.channel.send("✅");
+            player.send("✅");
             this.sendTurnMessage();
         } else {
             this.channel.send("Từ phải bắt đầu bằng ký tự của từ cuối cùng!");
@@ -80,6 +85,10 @@ class WordChainGame {
         if (this.words.includes(word)) return false;
         if (word.split(' ').length !== 2) return false;
         return true;
+    }
+
+    containsImage(message) {
+        return message.attachments && message.attachments.some(attachment => attachment.width);
     }
 
     endGame() {

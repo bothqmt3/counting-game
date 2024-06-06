@@ -62,12 +62,6 @@ client.on("messageCreate", async (message) => {
         return;
     }
 
-    if (message.content === '!reset') {
-        game.resetGame();
-        game.startGame();
-        return;
-    }
-
     if (game.inProgress && !message.author.bot) {
         if (!game.players.includes(message.author)) {
             game.addPlayer(message.author);

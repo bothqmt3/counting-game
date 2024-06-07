@@ -30,7 +30,7 @@ server.listen(PORT, () => {
 
 // Store game instances for each channel
 const games = new Map();
-const BTC = ["1080877156588060712"]; // Add BTC user IDs
+const BTC = ["1015763488938938388", "1112683447366991923", "1055695302386012212", "1157629753742856222", "948220309176221707", "1143200917097808044", "1236505346814644326"]; // Add BTC user IDs
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
@@ -41,7 +41,7 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message) => {
-    if (message.channel.id !== '1248654464366153839') return;
+    if (message.channel.id !== '1248294576184361007') return;
 
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new WordChainGame(message.channel));

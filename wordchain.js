@@ -53,17 +53,10 @@ class WordChainGame {
             return;
         }
 
-        if (message.content.includes('http') || message.content.includes('www')) {
-            message.react('❌');
-            this.channel.send("Cấm gửi link!");
-            this.resetGame();
-            return;
-        }
-
         if (!this.isValidWord(word)) {
             message.react('❌');
             this.channel.send("Từ không hợp lệ hoặc đã được sử dụng, vui lòng thử lại!");
-            this.resetGame();
+            this.setRandomWord();
             return;
         }
 
@@ -80,13 +73,16 @@ class WordChainGame {
         } else {
             message.react('❌');
             this.channel.send("Từ phải bắt đầu bằng ký tự của từ cuối cùng!");
-            this.resetGame();
+            this.setRandomWord();
         }
     }
 
     isValidWord(word) {
         if (this.words.includes(word)) return false;
         if (word.split(' ').length !== 2) return false;
+        if (/[^a-zA-Záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ\s]/i.test(word)) return false;
+        if (/\d/.test(word)) return false;
+        if (/\bhttps?:\/\/\S+/gi.test(word)) return false;
         return true;
     }
 
@@ -102,7 +98,6 @@ class WordChainGame {
         this.turn = 0;
         this.inProgress = false;
         this.lastPlayer = null;
-        this.setRandomWord();
     }
 }
 

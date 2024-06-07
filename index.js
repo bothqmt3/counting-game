@@ -13,6 +13,9 @@ const client = new Discord.Client({
     ],
 });
 
+// List các ID của BTC
+const BTC = ['1015763488938938388'];
+
 // Start the Bot
 client.login(process.env.token);
 
@@ -49,16 +52,24 @@ client.on("messageCreate", async (message) => {
     const game = games.get(message.channel.id);
 
     if (message.content === '!start') {
-        if (!game.players.includes(message.author)) {
-            game.addPlayer(message.author);
+        if (BTC.includes(message.author.id)) {
+            if (!game.players.includes(message.author)) {
+                game.addPlayer(message.author);
+            }
+            game.startGame();
+        } else {
+            message.channel.send("Chỉ có BTC mới có quyền bắt đầu trò chơi.");
         }
-        game.startGame();
         return;
     }
 
     if (message.content === '!end') {
-        game.endGame();
-        games.delete(message.channel.id);
+        if (BTC.includes(message.author.id)) {
+            game.endGame();
+            games.delete(message.channel.id);
+        } else {
+            message.channel.send("Chỉ có BTC mới có quyền kết thúc trò chơi.");
+        }
         return;
     }
 

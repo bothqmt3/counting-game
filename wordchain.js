@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 
+const BTC = ['1015763488938938388']; // List các ID của BTC
+
 class WordChainGame {
     constructor(channel) {
         this.channel = channel;
@@ -46,17 +48,33 @@ class WordChainGame {
         const player = message.author;
         const word = message.content.trim();
 
+        // Kiểm tra link
+        if (this.isLink(word)) {
+            message.react('❌');
+            this.channel.send("Không được gửi link!");
+            return;
+        }
+
+        // Kiểm tra hình ảnh
+        if (message.attachments.size > 0) {
+            message.react('❌');
+            this.channel.send("Không được gửi hình ảnh!");
+            return;
+        }
+
+        // Kiểm tra nếu người chơi đi 2 lần liên tiếp
         if (player === this.lastPlayer) {
             message.react('❌');
             this.channel.send("Bạn không thể nối 2 lần liên tiếp!");
             this.resetGame();
+            this.startGame();
             return;
         }
 
+        // Kiểm tra từ có hợp lệ không
         if (!this.isValidWord(word)) {
             message.react('❌');
             this.channel.send("Từ không hợp lệ hoặc đã được sử dụng, vui lòng thử lại!");
-            this.setRandomWord();
             return;
         }
 
@@ -73,21 +91,29 @@ class WordChainGame {
         } else {
             message.react('❌');
             this.channel.send("Từ phải bắt đầu bằng ký tự của từ cuối cùng!");
-            this.setRandomWord();
+            return;
         }
     }
 
     isValidWord(word) {
         if (this.words.includes(word)) return false;
         if (word.split(' ').length !== 2) return false;
-        if (/[^a-zA-Záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ\s]/i.test(word)) return false;
-        if (/\d/.test(word)) return false;
-        if (/\bhttps?:\/\/\S+/gi.test(word)) return false;
+        if (/\d/.test(word)) return false; // Không cho phép số
         return true;
     }
 
+    isLink(word) {
+        const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        return !!urlPattern.test(word);
+    }
+
     endGame() {
-        this.channel.send("Trò chơi kết thúc!");
+        this.channel.send("Trò chơi kết thúc! Chỉ BTC mới có quyền bắt đầu lại trò chơi.");
         this.resetGame();
     }
 

@@ -13,9 +13,6 @@ const client = new Discord.Client({
     ],
 });
 
-// List các ID của BTC
-const BTC = ['1015763488938938388'];
-
 // Start the Bot
 client.login(process.env.token);
 
@@ -33,6 +30,7 @@ server.listen(PORT, () => {
 
 // Store game instances for each channel
 const games = new Map();
+const BTC = ["1080877156588060712"]; // Add BTC user IDs
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
@@ -43,7 +41,7 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message) => {
-    if (message.channel.id !== '1248294576184361007') return;
+    if (message.channel.id !== '1248654464366153839') return;
 
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new WordChainGame(message.channel));
@@ -53,12 +51,9 @@ client.on("messageCreate", async (message) => {
 
     if (message.content === '!start') {
         if (BTC.includes(message.author.id)) {
-            if (!game.players.includes(message.author)) {
-                game.addPlayer(message.author);
-            }
             game.startGame();
         } else {
-            message.channel.send("Chỉ có BTC mới có quyền bắt đầu trò chơi.");
+            message.reply("Chỉ BTC mới có quyền bắt đầu trò chơi.");
         }
         return;
     }
@@ -68,15 +63,12 @@ client.on("messageCreate", async (message) => {
             game.endGame();
             games.delete(message.channel.id);
         } else {
-            message.channel.send("Chỉ có BTC mới có quyền kết thúc trò chơi.");
+            message.reply("Chỉ BTC mới có quyền kết thúc trò chơi.");
         }
         return;
     }
 
     if (game.inProgress && !message.author.bot) {
-        if (!game.players.includes(message.author)) {
-            game.addPlayer(message.author);
-        }
         game.processWord(message);
     }
 });

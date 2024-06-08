@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const http = require("http");
 const config = require(`./config.json`);
-const WordChainGame = require("./wordchain.js");
+const { CountingGame } = require("./count.js");
 
 const client = new Discord.Client({
     shards: "auto",
@@ -41,15 +41,15 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message) => {
-    if (message.channel.id !== '1148983687199871147') return;
+    if (message.channel.id !== '1248654464366153839') return;
 
     if (!games.has(message.channel.id)) {
-        games.set(message.channel.id, new WordChainGame(message.channel));
+        games.set(message.channel.id, new CountingGame(message.channel));
     }
 
     const game = games.get(message.channel.id);
 
-    if (message.content === '!start') {
+    if (message.content === '!startc') {
         if (BTC.includes(message.author.id)) {
             game.startGame();
         } else {
@@ -58,7 +58,7 @@ client.on("messageCreate", async (message) => {
         return;
     }
 
-    if (message.content === '!end') {
+    if (message.content === '!endc') {
         if (BTC.includes(message.author.id)) {
             game.endGame();
             games.delete(message.channel.id);
@@ -69,6 +69,6 @@ client.on("messageCreate", async (message) => {
     }
 
     if (game.inProgress && !message.author.bot) {
-        game.processWord(message);
+        game.processMessage(message);
     }
 });

@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const http = require("http");
 const config = require(`./config.json`);
 const { CountingGame } = require("./count.js");
+const { handleDeletedMessage, handleSnipeCommand } = require("./snipe.js");
 
 const client = new Discord.Client({
     shards: "auto",
@@ -72,3 +73,7 @@ client.on("messageCreate", async (message) => {
         game.processMessage(message);
     }
 });
+
+// Import and use the snipe functionalities
+handleDeletedMessage(client);
+handleSnipeCommand(client);

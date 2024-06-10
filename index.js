@@ -41,6 +41,21 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message) => {
+    if (message.content.startsWith("!rd")) {
+        const args = message.content.split(" ");
+        if (args.length === 2) {
+            const maxNumber = parseInt(args[1]);
+            if (!isNaN(maxNumber)) {
+                const randomNumber = Math.floor(Math.random() * maxNumber) + 1;
+                const embed = new Discord.MessageEmbed()
+                    .setColor("#00ff00")
+                    .setDescription(`<@${message.author.id}>, Your Number Is: ${randomNumber}`);
+                message.channel.send({ embeds: [embed] });
+                return;
+            }
+        }
+    }
+
     if (message.channel.id !== '1219618661883445249') return;
 
     if (!games.has(message.channel.id)) {

@@ -66,7 +66,7 @@ client.on("messageCreate", async (message) => {
         return;
     }
 
-    if (message.content.startsWith("!rd")) {
+    if (message.content.startsWith("~rd")) {
         const args = message.content.split(" ");
         if (args.length === 2) {
             const maxNumber = parseInt(args[1]);

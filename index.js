@@ -55,7 +55,11 @@ client.on("messageCreate", async (message) => {
     // Check if message mentions an AFK user
     message.mentions.users.forEach((user) => {
         if (afkUsers.has(user.id)) {
-            message.channel.send(`<a:hc_Diamond2:1250764691219681350> <@${user.id}> is currently AFK, the reason: ${afkUsers.get(user.id)}`);
+            const reason = afkUsers.get(user.id);
+            const replyMessage = BTC.includes(user.id)
+                ? `<a:hc_Diamond2:1250764691219681350> Sorry for the inconvenience, <@${user.id}> is AFK right now for reason: **${reason}**. They will reply to you immediately after AFK.`
+                : `<:hc_vaiz:1255415541770879028> <@${user.id}> is currently AFK, the reason: ${afkUsers.get(user.id)}`;
+            message.channel.send(replyMessage);
         }
     });
 

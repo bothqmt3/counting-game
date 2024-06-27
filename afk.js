@@ -1,19 +1,32 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+// afk.js
+
+const { Client, Intents } = require("discord.js");
+
+const afkUsers = new Map();
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("afk")
-        .setDescription("Sets your AFK status with an optional reason")
-        .addStringOption(option => 
-            option.setName("reason")
-                .setDescription("The reason you are AFK")
-                .setRequired(false)),
-    async execute(interaction) {
-        const reason = interaction.options.getString("reason") || "No reason provided";
-        const member = interaction.member;
-        const prevNickname = member.nickname || member.user.username;
+    name: "messageCreate",
+    execute(message) {
+        if (message.author.bot) return;
 
-        await interaction.reply(`You are now AFK: ${reason}`);
-        await member.setNickname("[AFK] " + prevNickname);
+        // Handle AFK status removal when the user sends a message
+        if (afkUsers.has(message.author.id)) {
+            afkUsers.delete(message.author.id);
+            message.channel.send(`<@${message.author.id}> is no longer AFK.`);
+        }
+
+        // Check if message mentions an AFK user
+        message.mentions.users.forEach((user) => {
+            if (afkUsers.has(user.id)) {
+                message.channel.send(`<@${user.id}> is currently AFK: ${afkUsers.get(user.id)}`);
+            }
+        });
+
+        if (message.content.startsWith("~afk")) {
+            const reason = message.content.split(" ").slice(1).join(" ") || "AFK";
+            afkUsers.set(message.author.id, reason);
+            message.channel.send(`<@${message.author.id}> is now AFK: ${reason}`);
+            return;
+        }
     }
 };

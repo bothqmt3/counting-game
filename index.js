@@ -55,7 +55,7 @@ client.on("messageCreate", async (message) => {
     // Check if message mentions an AFK user
     message.mentions.users.forEach((user) => {
         if (afkUsers.has(user.id)) {
-            message.channel.send(`<@${user.id}> is currently AFK: ${afkUsers.get(user.id)}`);
+            message.channel.send(`<a:hc_Diamond2:1250764691219681350> <@${user.id}> is currently AFK, the reason: ${afkUsers.get(user.id)}`);
         }
     });
 

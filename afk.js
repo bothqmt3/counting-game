@@ -12,7 +12,7 @@ module.exports = {
         // Handle AFK status removal when the user sends a message
         if (afkUsers.has(message.author.id)) {
             afkUsers.delete(message.author.id);
-            message.channel.send(`<@${message.author.id}> is no longer AFK.`);
+            message.channel.send(`<a:hc_BirbDa:1254079055389523978> Welcome back, <@${message.author.id}> is no longer AFK.`);
         }
 
         // Check if message mentions an AFK user

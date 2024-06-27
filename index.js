@@ -30,7 +30,7 @@ server.listen(PORT, () => {
 
 // Store game instances for each channel
 const games = new Map();
-const BTC = ["1015763488938938388", "1112683447366991923", "1055695302386012212", "1157629753742856222", "948220309176221707", "1143200917097808044", "1236505346814644326"]; // Add BTC user IDs
+const BTC = ["1015763488938938388", "1112683447366991923", "1242330820677603359", "1055695302386012212", "1157629753742856222", "948220309176221707", "1143200917097808044", "1236505346814644326"]; // Add BTC user IDs
 
 // Store AFK statuses
 const afkUsers = new Map();
@@ -81,7 +81,7 @@ client.on("messageCreate", async (message) => {
         }
     }
 
-    if (message.channel.id !== '1248266414461157396') return;
+    if (message.channel.id !== '1219618661883445249') return;
 
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new CountingGame(message.channel));

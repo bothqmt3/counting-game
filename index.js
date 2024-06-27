@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 const http = require("http");
 const config = require(`./config.json`);
 const { CountingGame } = require("./count.js");
-const afk = require("./afk");
 
 const client = new Discord.Client({
     shards: "auto",
@@ -33,7 +32,7 @@ server.listen(PORT, () => {
 const games = new Map();
 const BTC = ["1015763488938938388", "1112683447366991923", "1055695302386012212", "1157629753742856222", "948220309176221707", "1143200917097808044", "1236505346814644326"]; // Add BTC user IDs
 
-// Store AFK users and their reasons
+// Store AFK statuses
 const afkUsers = new Map();
 
 client.on("ready", () => {
@@ -47,29 +46,23 @@ client.on("ready", () => {
 client.on("messageCreate", async (message) => {
     if (message.author.bot) return;
 
-    // Check if the user is AFK
+    // Handle AFK status removal when the user sends a message
     if (afkUsers.has(message.author.id)) {
         afkUsers.delete(message.author.id);
-        const newNickname = message.member.nickname.replace("[AFK] ", "") || message.author.username;
-        await message.member.setNickname(newNickname);
-        message.reply("Welcome back! You are no longer AFK.");
+        message.channel.send(`<@${message.author.id}> is no longer AFK.`);
     }
 
-    // Check if mentioned user is AFK
-    message.mentions.users.forEach(user => {
+    // Check if message mentions an AFK user
+    message.mentions.users.forEach((user) => {
         if (afkUsers.has(user.id)) {
-            const reason = afkUsers.get(user.id);
-            message.reply(`${user.tag} is currently AFK: ${reason}`);
+            message.channel.send(`<@${user.id}> is currently AFK: ${afkUsers.get(user.id)}`);
         }
     });
 
-    // Handle commands
     if (message.content.startsWith("~afk")) {
-        const reason = message.content.slice(5).trim();
-        afkUsers.set(message.author.id, reason || "No reason provided");
-        const newNickname = "[AFK] " + (message.member.nickname || message.author.username);
-        await message.member.setNickname(newNickname);
-        message.reply(`You are now AFK: ${reason}`);
+        const reason = message.content.split(" ").slice(1).join(" ") || "AFK";
+        afkUsers.set(message.author.id, reason);
+        message.channel.send(`<@${message.author.id}> is now AFK: ${reason}`);
         return;
     }
 
@@ -88,7 +81,7 @@ client.on("messageCreate", async (message) => {
         }
     }
 
-    if (message.channel.id !== '1219618661883445249') return;
+    if (message.channel.id !== '1248266414461157396') return;
 
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new CountingGame(message.channel));

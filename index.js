@@ -46,7 +46,7 @@ const afkUsers = new Map();
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
-    const announcementChannel = client.channels.cache.get('1248298010429882508');
+    const announcementChannel = client.channels.cache.get('1219618661883445249');
     if (announcementChannel) {
         announcementChannel.send(`<@1015763488938938388> Bot đã sẵn sàng hoạt động!`);
     }

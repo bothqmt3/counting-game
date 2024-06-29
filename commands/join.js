@@ -11,7 +11,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setColor('#00FF00')
                 .setTitle('Thank you for adding me to your server!')
-                .setDescription('Enter `/help` or `~help` to get more information about the commands the bot currently has and is working properly.')
+                .setDescription('Enter </help:1256575842843361320> or `~help` to get more information about the commands the bot currently has and is working properly.')
                 .setFooter('MicroTechie ・Power By HQMT 💎', guild.me.user.displayAvatarURL());
 
             welcomeChannel.send({ embeds: [embed] });

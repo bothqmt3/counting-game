@@ -45,7 +45,7 @@ const afkUsers = new Map();
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
-    const announcementChannel = client.channels.cache.get('1219618661883445249');
+    const announcementChannel = client.channels.cache.get('1248298010429882508');
     if (announcementChannel) {
         announcementChannel.send(`<@1015763488938938388> Bot đã sẵn sàng hoạt động!`);
     }
@@ -93,7 +93,7 @@ client.on("messageCreate", async (message) => {
         }
     }
 
-    if (message.channel.id !== '1248266414461157396') return;
+    if (message.channel.id !== '1219618661883445249') return;
 
     if (!games.has(message.channel.id)) {
         games.set(message.channel.id, new CountingGame(message.channel));

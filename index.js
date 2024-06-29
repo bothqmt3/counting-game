@@ -3,7 +3,6 @@ const http = require("http");
 const config = require(`./config.json`);
 const { CountingGame } = require("./count.js");
 const fs = require('fs');
-require('dotenv').config();
 
 const client = new Discord.Client({
     shards: "auto",
